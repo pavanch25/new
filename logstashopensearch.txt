@@ -1,0 +1,33 @@
+--------------------------------------------------------------------------------------
+input {
+  s3 {
+    access_key_id => "AKIAZN2TYHKL3PUUZUXD"
+    secret_access_key => "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"
+    bucket => "opensearch123"
+    region => "us-east-1"
+    interval => "10"
+    watch_for_new_files => true
+  }
+}
+filter {
+  csv {
+      separator => ","
+#Date,Open,High,Low,Close,Volume (BTC),Volume (Currency),Weighted Price
+     columns => ["No","service","Cloud"]
+  }
+}
+output {
+    opensearch {
+          hosts  => ["https://search-test-sha7zyljbnjx76hyrsn2hug2hq.us-east-1.es.amazonaws.com:443"]
+          auth_type => {
+              type => 'basic'
+              user => 'admin'
+              password => 'Admin@1234'
+          }
+          index => "my-data-stream"
+          action => "create"
+   }
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+bin/logstash-plugin install logstash-output-opensearch (install opensearch plugin)
+----------------------------------------------------------------------------------------------------------------------------------------------------------
